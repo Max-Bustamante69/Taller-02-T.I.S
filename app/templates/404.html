@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página no encontrada - Pokeneas</title>
+    <!-- Correct path to CSS relative to the templates directory -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+
+<body>
+    <div class="container">
+        <div class="welcome-section">
+            <h1>¡Ups! Página no encontrada (404)</h1>
+            <p>Parece que el Pokenea que buscas se ha escondido muy bien.</p>
+            <p>La página que intentas visitar no existe.</p>
+        </div>
+        <div class="nav-links">
+            <a href="{{ url_for('main.home') }}">Volver al Inicio</a>
+        </div>
+    </div>
+</body>
+
+</html>

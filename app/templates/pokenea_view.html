@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokenea Aleatorio</title>
+    <link rel="stylesheet" href="../static/css/styles.css">
+
+</head>
+
+<body>
+    <div class="container">
+        <h1>{{ pokenea.nombre }}</h1>
+        <div class="img-container loading">
+
+            <img src="{{ image_url }}" alt="{{ pokenea.nombre }}" class="pokenea-img" onload="this.parentNode.classList.remove('loading')">
+        </div>
+        <div class="frase">
+            "{{ pokenea.frase }}"
+        </div>
+        <div class="nav-links">
+            <a href="/">Inicio</a>
+        </div>
+    </div>
+</body>
+
+</html>
