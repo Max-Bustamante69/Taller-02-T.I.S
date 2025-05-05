@@ -41,32 +41,66 @@ def get_aws_image_url(image_name):
     return f"https://{os.getenv('AWS_BUCKET')}.s3.{os.getenv('AWS_REGION')}.amazonaws.com/{image_name}"
 
 
-def upload_aws_image_url(image_url, image_name):
+def upload_aws_image_url(image_url, base_name):
     """
     Sube una imagen a un bucket S3 de AWS y devuelve la URL pública.
     Usando el bucket name y la región de AWS desde las variables de entorno.
+    
+    :param image_url: URL de la imagen a descargar
+    :param base_name: Nombre base para el archivo (sin extensión)
+    :return: URL pública de la imagen en S3
     """
     
     s3 = boto3.client(
         's3',
         region_name=os.getenv("AWS_REGION"),
-        config=Config(signature_version=UNSIGNED), # Use Config with UNSIGNED
+        config=Config(signature_version=UNSIGNED),
     )
     
-    #download the image from the url
-    response = requests.get(image_url)
-    if response.status_code != 200:
-        raise Exception(f"Error downloading image: {response.status_code}")
-    #save the image to a file
-    with open(image_name, 'wb') as f:
-        f.write(response.content)
-    #upload the image to s3
-    s3.upload_file(image_name, os.getenv("AWS_BUCKET"), image_name, ExtraArgs={'ACL': 'public-read'})
+    temp_file = "temp_download"
+    final_filename = None
     
-    #delete the image from the local file system
-    os.remove(image_name)
+    try:
+        # Download the image from the URL
+        response = requests.get(image_url)
+        if response.status_code != 200:
+            raise Exception(f"Error downloading image: {response.status_code}")
+        
+        # Save the image to a temporary file
+        with open(temp_file, 'wb') as f:
+            f.write(response.content)
+        
+        # Determine file extension from the downloaded file
+        import imghdr
+        file_ext = imghdr.what(temp_file)
+        if not file_ext:
+            # Fallback to basic extension detection
+            if response.headers.get('content-type', '').startswith('image/'):
+                file_ext = response.headers.get('content-type', '').split('/')[-1]
+            else:
+                file_ext = 'jpg'  # Default extension
+        
+        # Create final filename
+        final_filename = f"{base_name.lower().replace(' ', '_')}.{file_ext}"
+        
+        # Rename the temp file to the final filename
+        os.rename(temp_file, final_filename)
+        
+        # Upload the image to S3
+        s3.upload_file(final_filename, os.getenv("AWS_BUCKET"), final_filename, 
+                      ExtraArgs={'ACL': 'public-read'})
+        
+        return get_aws_image_url(final_filename)
     
-    return get_aws_image_url(image_name)
+    except Exception as e:
+        raise e
+    
+    finally:
+        # Clean up files regardless of success or failure
+        if os.path.exists(temp_file):
+            os.remove(temp_file)
+        if final_filename and os.path.exists(final_filename):
+            os.remove(final_filename)
 
 def get_container_id():
     """

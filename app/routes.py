@@ -76,36 +76,29 @@ def add_pokenea():
     form = PokeneaForm()
     
     if form.validate_on_submit():
-        # Extract image extension and create image name
+        # Get the image URL
         image_url = form.url_imagen.data
-        try:
-            # Use the utility function to get the file extension
-            file_extension = get_file_extension_from_url(image_url) 
-            if not file_extension:  # Check if extension was found
-                raise ValueError("Invalid image URL or missing extension")
-            image_name = f"{form.nombre.data.lower().replace(' ', '_')}{file_extension}"
-        except ValueError as e: # Catch the specific error
-            print(f"Error processing image URL: {e}")
-            return render_template('create_pokenea.html', form=form, error=str(e))
-        except Exception as e: # Catch other potential errors
-            print(f"Unexpected error processing image URL: {e}")
-            return render_template('create_pokenea.html', form=form, error="An unexpected error occurred.")
-
-        # Create a new Pokenea with the generated image name
-        new_pokenea = Pokenea(
-            nombre=form.nombre.data,
-            altura=form.altura.data,
-            habilidad=form.habilidad.data,
-            imagen=image_name,  # Use the generated image name
-            frase=form.frase.data
-        )
+        # Use the form name as the base name for the image
+        base_name = form.nombre.data
         
         try:
+            # Upload image to AWS and get back the full S3 URL and filename
+            aws_image_url = upload_aws_image_url(image_url, base_name)
+            # Extract just the filename part from the S3 URL
+            image_filename = aws_image_url.split('/')[-1]
+            
+            # Create a new Pokenea with the generated image name
+            new_pokenea = Pokenea(
+                nombre=form.nombre.data,
+                altura=form.altura.data,
+                habilidad=form.habilidad.data,
+                imagen=image_filename,
+                frase=form.frase.data
+            )
+            
             # Add to database
             db.session.add(new_pokenea)
             db.session.commit()
-            # Upload image to AWS using the generated name
-            upload_aws_image_url(image_url, image_name)  # Pass image_name
             
             # Redirect to the new Pokenea's page
             return redirect(url_for('main.show_pokenea_by_id', pokenea_id=new_pokenea.id))
@@ -114,12 +107,12 @@ def add_pokenea():
             db.session.rollback()
             print(f"Error al guardar el Pokenea o subir imagen: {e}")
             
-            #Delete the Entry for the new Pokenea if it was created but not committed, check if the pokenea exists in the session
-            if new_pokenea in db.session:
+            #Delete the Entry for the new Pokenea if it was created but not committed
+            if 'new_pokenea' in locals() and new_pokenea in db.session:
                 db.session.delete(new_pokenea)
                 db.session.commit()
                 
-            # More specific error message might be helpful depending on the exception
+            # More specific error message
             error_message = "Error al guardar el Pokenea. Asegúrate de que el nombre sea único y la URL de la imagen sea válida."
             return render_template('create_pokenea.html', form=form, error=error_message)
     
