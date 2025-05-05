@@ -6,6 +6,7 @@ from botocore import UNSIGNED # Import UNSIGNED
 from botocore.client import Config # Import Config
 import requests
 from urllib.parse import urlparse # Import urlparse
+import socket  # Add this to get the hostname/container ID
 
 load_dotenv()
 
@@ -64,3 +65,13 @@ def upload_aws_image_url(image_url, image_name):
     os.remove(image_name)
     
     return get_aws_image_url(image_name)
+
+def get_container_id():
+    """
+    Get the Docker container ID of the current container.
+    Returns the hostname which is set by Docker to the container ID by default.
+    """
+    try:
+        return socket.gethostname()
+    except:
+        return "unknown-container"

@@ -1,7 +1,7 @@
-from flask import Blueprint, jsonify, render_template, request, redirect, url_for, flash
+from flask import Blueprint, jsonify, render_template, redirect, url_for
 from app.models import get_random_pokenea, get_pokenea, get_all_pokeneas, Pokenea
 # Import the new function
-from app.utils import get_aws_image_url, upload_aws_image_url, get_file_extension_from_url
+from app.utils import get_aws_image_url, upload_aws_image_url, get_file_extension_from_url, get_container_id
 from app.forms import PokeneaForm
 from app import db
 import os  # Import the os module
@@ -33,6 +33,9 @@ def get_pokenea_json():
         
     response = pokenea.to_json()
     
+    # Add container ID to the JSON response
+    response['container_id'] = get_container_id()
+    
     return jsonify(response)
 
 @main.route('/pokenea', methods=['GET'])
@@ -45,9 +48,11 @@ def show_pokenea():
         
     image_url = get_aws_image_url(pokenea.imagen)
     
+    # Pass the container ID to the template
     return render_template('pokenea_view.html', 
                           pokenea=pokenea, 
-                          image_url=image_url)
+                          image_url=image_url,
+                          container_id=get_container_id())
 
 @main.route('/pokenea/<int:pokenea_id>', methods=['GET'])
 def show_pokenea_by_id(pokenea_id):
@@ -59,9 +64,11 @@ def show_pokenea_by_id(pokenea_id):
     
     image_url = get_aws_image_url(pokenea.imagen)
     
+    # Pass the container ID to the template
     return render_template('pokenea_view.html', 
                           pokenea=pokenea, 
-                          image_url=image_url)
+                          image_url=image_url,
+                          container_id=get_container_id())
 
 @main.route('/your-pokenea', methods=['GET', 'POST'])
 def add_pokenea():

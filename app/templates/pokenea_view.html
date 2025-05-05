@@ -14,13 +14,18 @@
         <h1>{{ pokenea.nombre }}</h1>
         <div class="img-container loading">
 
-            <img src="{{ image_url }}" alt="{{ pokenea.nombre }}" class="pokenea-img" onload="this.parentNode.classList.remove('loading')">
+            <img src="{{ image_url }}" alt="{{ pokenea.nombre }}" class="pokenea-img"
+                onload="this.parentNode.classList.remove('loading')">
         </div>
         <div class="frase">
             "{{ pokenea.frase }}"
         </div>
         <div class="nav-links">
             <a href="/">Inicio</a>
+        </div>
+
+        <div class="container-id">
+            Servido por el contenedor: {{ container_id }}
         </div>
     </div>
 </body>
