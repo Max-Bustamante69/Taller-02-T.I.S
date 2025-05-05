@@ -1,10 +1,12 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 import os
-from dotenv import load_dotenv
 
-# Load environment variables
-load_dotenv()
+# Conditional loading of .env file
+from dotenv import load_dotenv
+if not os.environ.get('SECRET_KEY'):
+    load_dotenv()
+
 
 # Initialize SQLAlchemy here so it can be imported by models
 db = SQLAlchemy()

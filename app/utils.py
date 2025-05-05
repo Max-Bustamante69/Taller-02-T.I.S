@@ -1,6 +1,6 @@
 import os
 #get env variables
-from dotenv import load_dotenv
+
 import boto3
 from botocore import UNSIGNED # Import UNSIGNED
 from botocore.client import Config # Import Config
@@ -8,7 +8,9 @@ import requests
 from urllib.parse import urlparse # Import urlparse
 import socket  # Add this to get the hostname/container ID
 
-load_dotenv()
+from dotenv import load_dotenv
+if not (os.environ.get('AWS_BUCKET') and os.environ.get('AWS_REGION')):
+    load_dotenv()
 
 
 def get_file_extension_from_url(url):
