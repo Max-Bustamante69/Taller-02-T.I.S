@@ -1,163 +1,79 @@
-<!DOCTYPE html>
-<html lang="es">
+{% extends "layout.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crea tu Pokenea</title>
-    <link rel="stylesheet" href="../static/css/styles.css">
-    <style>
-        /* Additional styles for the form */
-        .form-container {
-            background-color: var(--bg-accent);
-            padding: 2rem;
-            border-radius: var(--radius);
-            width: 100%;
-            max-width: 600px;
-            margin: 0 auto;
-        }
+{% block title %}Crea tu Pokenea{% endblock %}
 
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
+{% block header %}Crea tu propio Pokenea{% endblock %}
+{% block subheader %}¡Diseña tu criatura paisa única y agrégala a nuestra colección!{% endblock %}
 
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            color: var(--primary);
-            font-weight: 600;
-        }
+{% block extra_styles %}
 
-        .form-control {
-            width: 100%;
-            padding: 0.75rem;
-            border-radius: 8px;
-            border: 1px solid var(--border);
-            background-color: var(--bg-main);
-            color: var(--text-main);
-            font-size: 1rem;
-        }
+{% endblock %}
 
-        .form-control:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 2px rgba(0, 198, 173, 0.3);
-        }
+{% block content %}
+{% if error %}
+<div class="error-message">
+    {{ error }}
+</div>
+{% endif %}
 
-        .btn-submit {
-            background-color: var(--primary);
-            color: var(--bg-main);
-            font-weight: 600;
-            padding: 0.75rem 1.5rem;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background-color var(--transition), transform var(--transition);
-        }
+<div class="form-container">
+    <form method="POST">
+        {{ form.hidden_tag() }}
 
-        .btn-submit:hover {
-            background-color: var(--primary-hover);
-            transform: translateY(-2px);
-        }
-
-        .error-message {
-            color: #ff4d4f;
-            margin-top: 0.5rem;
-            font-size: 0.9rem;
-        }
-
-        .field-error {
-            margin-top: 0.25rem;
-            color: #ff4d4f;
-            font-size: 0.8rem;
-        }
-
-        .home-link {
-            display: block;
-            margin-top: 2rem;
-            text-align: center;
-        }
-    </style>
-</head>
-
-<body>
-    <div class="container">
-        <div class="welcome-section">
-            <h1>Crea tu propio Pokenea</h1>
-            <p>¡Diseña tu criatura paisa única y agrégala a nuestra colección!</p>
+        <div class="form-group">
+            {{ form.nombre.label }}
+            {{ form.nombre(class="form-control") }}
+            {% if form.nombre.errors %}
+            {% for error in form.nombre.errors %}
+            <div class="field-error">{{ error }}</div>
+            {% endfor %}
+            {% endif %}
         </div>
 
-        {% if error %}
-        <div class="error-message">
-            {{ error }}
-        </div>
-        {% endif %}
-
-        <div class="form-container">
-            <form method="POST">
-                {{ form.hidden_tag() }}
-
-                <div class="form-group">
-                    {{ form.nombre.label }}
-                    {{ form.nombre(class="form-control") }}
-                    {% if form.nombre.errors %}
-                    {% for error in form.nombre.errors %}
-                    <div class="field-error">{{ error }}</div>
-                    {% endfor %}
-                    {% endif %}
-                </div>
-
-                <div class="form-group">
-                    {{ form.altura.label }}
-                    {{ form.altura(class="form-control") }}
-                    {% if form.altura.errors %}
-                    {% for error in form.altura.errors %}
-                    <div class="field-error">{{ error }}</div>
-                    {% endfor %}
-                    {% endif %}
-                </div>
-
-                <div class="form-group">
-                    {{ form.habilidad.label }}
-                    {{ form.habilidad(class="form-control") }}
-                    {% if form.habilidad.errors %}
-                    {% for error in form.habilidad.errors %}
-                    <div class="field-error">{{ error }}</div>
-                    {% endfor %}
-                    {% endif %}
-                </div>
-
-                <div class="form-group">
-                    {{ form.url_imagen.label }}
-                    {{ form.url_imagen(class="form-control") }}
-                    
-                    {% if form.url_imagen.errors %}
-                    {% for error in form.url_imagen.errors %}
-                    <div class="field-error">{{ error }}</div>
-                    {% endfor %}
-                    {% endif %}
-                </div>
-
-
-
-                <div class="form-group">
-                    {{ form.frase.label }}
-                    {{ form.frase(class="form-control", rows=4) }}
-                    {% if form.frase.errors %}
-                    {% for error in form.frase.errors %}
-                    <div class="field-error">{{ error }}</div>
-                    {% endfor %}
-                    {% endif %}
-                </div>
-
-                <div class="form-group">
-                    {{ form.submit(class="btn-submit") }}
-                </div>
-            </form>
+        <div class="form-group">
+            {{ form.altura.label }}
+            {{ form.altura(class="form-control") }}
+            {% if form.altura.errors %}
+            {% for error in form.altura.errors %}
+            <div class="field-error">{{ error }}</div>
+            {% endfor %}
+            {% endif %}
         </div>
 
-        <a href="/" class="home-link">Volver al inicio</a>
-    </div>
-</body>
+        <div class="form-group">
+            {{ form.habilidad.label }}
+            {{ form.habilidad(class="form-control") }}
+            {% if form.habilidad.errors %}
+            {% for error in form.habilidad.errors %}
+            <div class="field-error">{{ error }}</div>
+            {% endfor %}
+            {% endif %}
+        </div>
 
-</html>
+        <div class="form-group">
+            {{ form.url_imagen.label }}
+            {{ form.url_imagen(class="form-control") }}
+
+            {% if form.url_imagen.errors %}
+            {% for error in form.url_imagen.errors %}
+            <div class="field-error">{{ error }}</div>
+            {% endfor %}
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            {{ form.frase.label }}
+            {{ form.frase(class="form-control", rows=4) }}
+            {% if form.frase.errors %}
+            {% for error in form.frase.errors %}
+            <div class="field-error">{{ error }}</div>
+            {% endfor %}
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            {{ form.submit(class="btn-submit") }}
+        </div>
+    </form>
+</div>
+{% endblock %}

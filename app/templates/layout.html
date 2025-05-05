@@ -1,0 +1,40 @@
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Pokeneas{% endblock %}</title>
+
+    <!-- Favicon - Pokeball icon -->
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/pokeball.png') }}">
+
+    <!-- CSS Styles -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+
+    {% block extra_styles %}{% endblock %}
+</head>
+
+<body>
+    <div class="container">
+        <div class="welcome-section">
+            <h1>{% block header %}¡Bienvenido al mundo de los Pokeneas!{% endblock %}</h1>
+            <p>{% block subheader %}Descubre estas fascinantes criaturas inspiradas en la cultura paisa.{% endblock %}
+            </p>
+        </div>
+
+        <div class="nav-links">
+            <a href="{{ url_for('main.home') }}">Inicio</a>
+            <a href="{{ url_for('main.show_pokenea') }}">Pokenea Aleatorio</a>
+            <a href="{{ url_for('main.get_pokenea_json') }}">API Pokenea (JSON)</a>
+            <a href="{{ url_for('main.add_pokenea') }}">Crea tu Pokenea</a>
+        </div>
+
+        {% block content %}{% endblock %}
+
+        {% block extra_scripts %}{% endblock %}
+    </div>
+</body>
+
+</html>

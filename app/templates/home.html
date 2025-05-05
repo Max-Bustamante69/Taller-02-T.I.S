@@ -1,41 +1,20 @@
-<!DOCTYPE html>
-<html lang="es">
+{% extends "layout.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pokeneas - Inicio</title>
-    <link rel="stylesheet" href="../static/css/styles.css">
+{% block title %}Pokeneas - Inicio{% endblock %}
 
-</head>
+{% block header %}¡Bienvenido al mundo de los Pokeneas PUES PUES PUES!{% endblock %}
 
-<body>
-    <div class="container">
-        <div class="welcome-section">
-            <h1>¡Bienvenido al mundo de los Pokeneas PUES PUES PUES!</h1>
-            <p>Descubre estas fascinantes criaturas inspiradas en la cultura paisa.</p>
+{% block content %}
+<h2>Todos los Pokeneas</h2>
+<div class="pokeneas-grid">
+    {% for item in pokeneas_with_images %}
+    <a href="{{ url_for('main.show_pokenea_by_id', pokenea_id=item.pokenea.id) }}" class="pokenea-card">
+        <div class="img-container loading">
+            <img src="{{ item.image_url }}" alt="{{ item.pokenea.nombre }}"
+                onload="this.parentNode.classList.remove('loading')">
         </div>
-
-        <div class="nav-links">
-            <a href="/pokenea">Pokenea Aleatorio</a>
-            <a href="/api/pokenea">API Pokenea (JSON)</a>
-            <a href="/your-pokenea">Crea tu Pokenea</a>
-        </div>
-
-        <h2>Todos los Pokeneas</h2>
-        <div class="pokeneas-grid">
-            {% for item in pokeneas_with_images %}
-            <a href="/pokenea/{{ item.pokenea.id }}" class="pokenea-card">
-                <div class="img-container loading">
-                    <img src="{{ item.image_url }}" alt="{{ item.pokenea.nombre }}"
-                        onload="this.parentNode.classList.remove('loading')">
-                </div>
-                <h3>{{ item.pokenea.nombre }}</h3>
-            </a>
-            {% endfor %}
-        </div>
-    </div>
-
-</body>
-
-</html>
+        <h3>{{ item.pokenea.nombre }}</h3>
+    </a>
+    {% endfor %}
+</div>
+{% endblock %}
