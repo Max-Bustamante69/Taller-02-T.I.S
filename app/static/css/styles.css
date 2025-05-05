@@ -35,6 +35,8 @@ body {
 .container {
   width: 95%;
   max-width: 1200px;
+  max-height: 1000px;
+  overflow: auto;
   margin: 40px auto;
   background: var(--bg-card);
   border-radius: var(--radius);
