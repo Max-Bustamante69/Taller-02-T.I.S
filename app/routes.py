@@ -82,12 +82,13 @@ def add_pokenea():
         base_name = form.nombre.data
         
         try:
-            # Upload image to AWS and get back the full S3 URL and filename
+            # First validate and upload the image to AWS
+            # This will raise an exception if the image is not valid
             aws_image_url = upload_aws_image_url(image_url, base_name)
             # Extract just the filename part from the S3 URL
             image_filename = aws_image_url.split('/')[-1]
             
-            # Create a new Pokenea with the generated image name
+            # Only create a Pokenea if the image is valid and was uploaded successfully
             new_pokenea = Pokenea(
                 nombre=form.nombre.data,
                 altura=form.altura.data,
@@ -104,16 +105,9 @@ def add_pokenea():
             return redirect(url_for('main.show_pokenea_by_id', pokenea_id=new_pokenea.id))
         
         except Exception as e:
-            db.session.rollback()
-            print(f"Error al guardar el Pokenea o subir imagen: {e}")
-            
-            #Delete the Entry for the new Pokenea if it was created but not committed
-            if 'new_pokenea' in locals() and new_pokenea in db.session:
-                db.session.delete(new_pokenea)
-                db.session.commit()
-                
-            # More specific error message
-            error_message = "Error al guardar el Pokenea. Asegúrate de que el nombre sea único y la URL de la imagen sea válida."
+            # No need for rollback since we haven't added anything to the DB yet
+            error_message = f"Error: {str(e)}"
+            print(f"Error al procesar la imagen o guardar el Pokenea: {e}")
             return render_template('create_pokenea.html', form=form, error=error_message)
     
     # GET request or form validation failed
