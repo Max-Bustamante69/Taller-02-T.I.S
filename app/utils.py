@@ -49,6 +49,7 @@ def upload_aws_image_url(image_url, base_name):
     :param image_url: URL de la imagen a descargar
     :param base_name: Nombre base para el archivo (sin extensión)
     :return: URL pública de la imagen en S3
+    :raises: Exception if the image format is not valid for HTML display
     """
     
     s3 = boto3.client(
@@ -59,6 +60,9 @@ def upload_aws_image_url(image_url, base_name):
     
     temp_file = "temp_download"
     final_filename = None
+    
+    # Valid image extensions for HTML img tags
+    valid_image_extensions = ['jpg', 'jpeg', 'png', 'gif', 'svg', 'webp', 'bmp', 'ico']
     
     try:
         # Download the image from the URL
@@ -73,12 +77,17 @@ def upload_aws_image_url(image_url, base_name):
         # Determine file extension from the downloaded file
         import imghdr
         file_ext = imghdr.what(temp_file)
+        
         if not file_ext:
             # Fallback to basic extension detection
             if response.headers.get('content-type', '').startswith('image/'):
                 file_ext = response.headers.get('content-type', '').split('/')[-1]
             else:
-                file_ext = 'jpg'  # Default extension
+                file_ext = None
+        
+        # Check if extension is valid for HTML img tag
+        if not file_ext or file_ext.lower() not in valid_image_extensions:
+            raise Exception(f"Invalid or unsupported image format: {file_ext}. Supported formats: {', '.join(valid_image_extensions)}")
         
         # Create final filename
         final_filename = f"{base_name.lower().replace(' ', '_')}.{file_ext}"
