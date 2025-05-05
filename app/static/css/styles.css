@@ -7,18 +7,19 @@
   --text-main: #f5f6fa;
   --text-secondary: #b5bac6;
   --border: #2e313a;
-  --shadow: 0 4px 24px rgba(0,0,0,0.25);
+  --shadow: 0 4px 24px rgba(0, 0, 0, 0.25);
   --radius: 16px;
-  --transition: 0.2s cubic-bezier(.4,0,.2,1);
+  --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-html, body {
+html,
+body {
   height: 100%;
   margin: 0;
   padding: 0;
   background: var(--bg-main);
   color: var(--text-main);
-  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+  font-family: "Inter", "Segoe UI", Arial, sans-serif;
   font-size: 16px;
   min-height: 100dvh;
 }
@@ -52,11 +53,13 @@ body {
   padding: 1.5rem 2rem;
   background: var(--bg-accent);
   border-radius: var(--radius);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   text-align: center;
 }
 
-h1, h2, h3 {
+h1,
+h2,
+h3 {
   color: var(--text-main);
   font-weight: 700;
   letter-spacing: 0.01em;
@@ -98,8 +101,9 @@ p {
   border-radius: 8px;
   font-weight: 600;
   letter-spacing: 0.05em;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
-  transition: background var(--transition), color var(--transition), transform var(--transition);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: background var(--transition), color var(--transition),
+    transform var(--transition);
   text-transform: uppercase;
   font-size: 1rem;
 }
@@ -121,10 +125,11 @@ p {
 .pokenea-card {
   background: var(--bg-accent);
   border-radius: var(--radius);
-  box-shadow: 0 2px 12px rgba(0,0,0,0.12);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12);
   border: 1.5px solid var(--border);
   overflow: hidden;
-  transition: box-shadow var(--transition), transform var(--transition), border-color var(--transition);
+  transition: box-shadow var(--transition), transform var(--transition),
+    border-color var(--transition);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -132,7 +137,7 @@ p {
 }
 
 .pokenea-card:hover {
-  box-shadow: 0 6px 24px rgba(0,0,0,0.18);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.18);
   border-color: var(--primary);
   transform: translateY(-4px) scale(1.03);
 }
@@ -158,14 +163,14 @@ a:hover {
 }
 
 .img-container {
-  width: 220px;
-  height: 220px;
+  min-height: 200px;
+  min-width: 250px;
   position: relative;
   overflow: hidden;
   border-radius: 12px;
   background: #23262f;
   margin: 1.2rem auto 0.5rem auto;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   display: flex;
   align-items: center;
   justify-content: center;
