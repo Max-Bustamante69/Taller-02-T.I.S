@@ -46,8 +46,7 @@ def create_app():
     
     # Create database tables and initialize data within application context
     with app.app_context():
-        from app.models import init_db
         db.create_all()
-        init_db()
+
     
     return app
