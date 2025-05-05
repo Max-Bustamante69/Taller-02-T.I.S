@@ -27,7 +27,7 @@ jobs:
       with:
         context: . 
         push: true
-        tags: ${{ secrets.DOCKER_HUB_USERNAME }}/taller-02-t.i.s:latest 
+        tags: ${{ secrets.DOCKER_HUB_USERNAME }}/taller-02-teis:latest 
 
             ${{ secrets.DOCKER_HUB_USERNAME }}
             ${{ secrets.DOCKER_HUB_USERNAME }}${{ github.sha }}
