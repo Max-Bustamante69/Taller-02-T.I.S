@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, render_template, redirect, url_for
 from app.models import get_random_pokenea, get_pokenea, get_all_pokeneas, Pokenea
 # Import the new function
-from app.utils import get_aws_image_url, upload_aws_image_url, get_file_extension_from_url, get_container_id
+from app.utils import get_aws_image_url, upload_aws_image_url, get_container_id
 from app.forms import PokeneaForm
 from app import db
 import os  # Import the os module
