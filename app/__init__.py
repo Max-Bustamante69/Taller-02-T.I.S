@@ -5,8 +5,13 @@ from urllib.parse import urlparse
 
 # Conditional loading of .env file
 from dotenv import load_dotenv
+
+def reload_env():
+    """Force reload environment variables from .env file"""
+    load_dotenv(override=True)
+
 if not os.environ.get('SECRET_KEY') or not os.environ.get('DATABASE_URL'):
-    load_dotenv()
+    reload_env()
 
 # Initialize SQLAlchemy here so it can be imported by models
 db = SQLAlchemy()
